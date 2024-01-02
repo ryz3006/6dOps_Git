@@ -50,6 +50,8 @@ def execute_query(query, params=None, fetch=True):
 
 
 
+# API route to handle KPI stats submission
+@app.route('/kpi_stats_submit', methods=['POST'])
 def kpi_stats_submit():
     try:
         data = request.get_json()
@@ -102,6 +104,7 @@ def kpi_stats_submit():
                             existing_status = execute_query(status_query, status_params)
                             logger.debug(f"Existing status for KeyName {key['KeyName']}: {existing_status}")
 
+                            
                             # Insert or update values in service_status table
                             if not existing_status:
                                 # Check if KeyName is available in services_details table
@@ -121,14 +124,16 @@ def kpi_stats_submit():
                             else:
                                 update_status_query = "UPDATE service_status SET service_key_value = %s, service_key_desc = %s, last_updated_date = %s WHERE service_id = %s AND service_key_name = %s"
                                 update_status_params = (key["KeyValue"], key["KeyDesc"], datetime.now(), service_id, key["KeyName"])
-                                execute_query(update_status_query, update_status_params)
+                                execute_query(update_status_query, update_status_params, fetch=False)  # Set fetch=False for UPDATE queries
                                 logger.info(f"Updated status for KeyName {key['KeyName']}")
+
 
                             # Insert into alert_history table
                             insert_alert_query = "INSERT INTO alert_history (service_id, service_details_id, service_key_name, service_key_value, service_key_desc, updated_date, Month_Partition) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                             insert_alert_params = (service_id, existing_key[0]["id"] if existing_key else None, key["KeyName"], key["KeyValue"], key["KeyDesc"], datetime.now(), datetime.now().strftime("%Y-%m"))
-                            execute_query(insert_alert_query, insert_alert_params)
+                            execute_query(insert_alert_query, insert_alert_params, fetch=False)  # Set fetch=False for INSERT queries
                             logger.info(f"Inserted into alert_history for KeyName {key['KeyName']}")
+
 
         return jsonify({"message": "KPI stats submitted successfully"}), 200
 
