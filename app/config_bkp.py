@@ -19,3 +19,7 @@ class Config:
     EMAIL_USERNAME = 'riyas.siddikk@6dtech.co.in'
     EMAIL_PASSWORD = 'qwertyryz'
     EMAIL_SENDER = 'riyas.siddikk@6dtech.co.in'
+
+    # Flask application configuration
+    FLASK_HOST = '0.0.0.0'
+    FLASK_PORT = 5001

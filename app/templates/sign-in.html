@@ -5,9 +5,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='media/Logo_A_Icon.png') }}">
   <title>
-    6D - Operations - Dashboard
+    6D - TOPS Monitor / Login
   </title>
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -48,6 +48,11 @@
       font-weight: bold;
       font-size: 16px;
     }
+    .navbar-logo {
+    width: 150px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    object-fit: contain; /* This property ensures the image retains its aspect ratio */
+}
   </style>
 </head>
 
@@ -57,12 +62,20 @@
       <div class="col-12">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+
           <div class="container-fluid pe-0">
             <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
-              <img src="{{ url_for('static', filename='media/Logo_A.PNG') }}" alt="Logo" width="150" height="40">
-            </a>
+              <img class="navbar-logo" src="{{ url_for('static', filename='media/Logo_A_Icon.png') }}" alt="6DLogo">
+          </a>
+              <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
+                  <img class="navbar-logo" src="{{ url_for('static', filename='media/tops-monitor-high-resolution-logo-transparent.png') }}" alt="Logo">
+              </a>
           </div>
-        </nav>
+      </nav>
+      
+      
+      
+      
         <!-- End Navbar -->
       </div>
     </div>
@@ -74,6 +87,7 @@
           <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
               <div class="card card-plain mt-8">
+
                 <div class="card-header pb-0 text-left bg-transparent">
                   <h3 class="font-weight-bolder text-info text-gradient">Login</h3>
                 </div>
@@ -101,13 +115,11 @@
                   });
               </script>
               
-                  <form method="POST" action="{{ url_for('login') }}">
-                    <label>Username</label>
+                  <form method="POST" action="{{ url_for('login_bp.login') }}">
                     <div class="mb-3">
                       <!-- Update the input names to match your Python code -->
                       <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="username-addon" required>
                     </div>
-                    <label>Password</label>
                     <div class="mb-3">
                       <!-- Update the input names to match your Python code -->
                       <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon" required>
@@ -127,6 +139,7 @@
                     <a href="signup" class="text-info text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
+
               </div>
             </div>
             <div class="col-md-6">
@@ -142,25 +155,15 @@
   <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <footer class="footer py-5">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="https://www.6dtechnologies.com/" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            Company
-          </a>
-          <a href="https://www.6dtechnologies.com/about-us/" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            About Us
-          </a>
-          <a href="https://sites.google.com/6dtech.co.in/6dsupportoperations/home" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
-            Team
-          </a>
-        </div>
+      
       </div>
       <div class="row">
         <div class="col-8 mx-auto text-center mt-1">
-          <p class="mb-0 text-secondary">
-            Copyright © <script>
-              document.write(new Date().getFullYear())
-            </script> 6D TeamOps
+                    <div class="container-fluid pe-0 ml-auto">
+              <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
+                  <img class="navbar-logo" src="{{ url_for('static', filename='media/Logo_A.PNG') }}" alt="Logo" width="150" height="40">
+              </a>
+          </div>
           </p>
         </div>
       </div>

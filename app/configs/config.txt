@@ -1,0 +1,23 @@
+[DEFAULT]
+SECRET_KEY = 'SecretKey#8899'
+
+[Database]
+DB_HOST = 127.0.0.1
+DB_USER = opsuser
+DB_PASSWORD = opsuser@6Dtech
+DB_DATABASE = OPS
+
+[Session]
+SESSION_TYPE = filesystem
+PERMANENT_SESSION_LIFETIME = 5
+
+[Email]
+EMAIL_SERVER = smtp.gmail.com
+EMAIL_PORT = 587
+EMAIL_USERNAME = riyas.siddikk@6dtech.co.in
+EMAIL_PASSWORD = qwertyryz
+EMAIL_SENDER = riyas.siddikk@6dtech.co.in
+
+[Flask]
+FLASK_HOST = 0.0.0.0
+FLASK_PORT = 5001
