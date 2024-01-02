@@ -30,18 +30,18 @@ def execute_query(query, params=None, fetch=True):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
-
         if params:
             cursor.execute(query, params)
         else:
             cursor.execute(query)
 
-        if fetch:
-            result = cursor.fetchall()
-        else:
-            result = None
+        # Commit only for INSERT and UPDATE queries
+        if query.lower().startswith("insert") or query.lower().startswith("update"):
+            connection.commit()
 
-        connection.commit()
+        # Fetch results only if explicitly requested
+        result = cursor.fetchall() if fetch else None
+
         connection.close()
         return result
     except Exception as e:
@@ -97,6 +97,7 @@ def kpi_stats_submit():
                                 insert_key_params = (service_id, key["KeyName"], threshold_value, "s3")
                                 execute_query(insert_key_query, insert_key_params)
                                 logger.info(f"Inserted key for KeyName {key['KeyName']}")
+
 
                             # Check if service is available in service_status table
                             status_query = "SELECT * FROM service_status WHERE service_id = %s AND service_key_name = %s"
