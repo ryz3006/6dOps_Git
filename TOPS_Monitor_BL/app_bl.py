@@ -19,7 +19,6 @@ db_config = {
 
 logger.info(f"Connecting to database with configuration: {db_config}")
 
-# Helper function to execute SQL queries
 def execute_query(query, params=None, fetch=True):
     try:
         connection = mysql.connector.connect(**db_config)
@@ -32,6 +31,11 @@ def execute_query(query, params=None, fetch=True):
         # Commit only for INSERT and UPDATE queries
         if query.lower().startswith("insert") or query.lower().startswith("update"):
             connection.commit()
+            
+            # Return None for INSERT queries to avoid fetching results
+            if query.lower().startswith("insert"):
+                connection.close()
+                return None
 
         # Fetch results only if explicitly requested
         result = cursor.fetchall() if fetch else None
@@ -41,6 +45,7 @@ def execute_query(query, params=None, fetch=True):
     except Exception as e:
         logger.error(f"Error executing query: {query}. Params: {params}. Error: {e}")
         raise e
+
 
 # API route to handle KPI stats submission
 @app.route('/kpi_stats_submit', methods=['POST'])
