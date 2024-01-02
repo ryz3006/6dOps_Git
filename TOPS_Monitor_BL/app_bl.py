@@ -36,13 +36,18 @@ def execute_query(query, params=None, fetch=True):
         else:
             cursor.execute(query)
 
-        result = cursor.fetchall() if fetch else None
+        if fetch:
+            result = cursor.fetchall()
+        else:
+            result = None
+
         connection.commit()
         connection.close()
         return result
     except Exception as e:
         logger.error(f"Error executing query: {query}. Params: {params}. Error: {e}")
         raise e
+
 
 
 # API route to handle KPI stats submission
@@ -126,8 +131,9 @@ def kpi_stats_submit():
                             # Insert into alert_history table
                             insert_alert_query = "INSERT INTO alert_history (service_id, service_details_id, service_key_name, service_key_value, service_key_desc, updated_date, Month_Partition) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                             insert_alert_params = (service_id, existing_key[0]["id"] if existing_key else None, key["KeyName"], key["KeyValue"], key["KeyDesc"], datetime.now(), datetime.now().strftime("%Y-%m"))
-                            execute_query(insert_alert_query, insert_alert_params)
+                            execute_query(insert_alert_query, insert_alert_params, fetch=False)  # Set fetch=False for INSERT queries
                             logger.info(f"Inserted into alert_history for KeyName {key['KeyName']}")
+
 
         return jsonify({"message": "KPI stats submitted successfully"}), 200
 
