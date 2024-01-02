@@ -26,22 +26,24 @@ logger.info("Database connection successful!")
 
 
 # Helper function to execute SQL queries
-def execute_query(query, params=None):
+def execute_query(query, params=None, fetch=True):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
+
         if params:
             cursor.execute(query, params)
         else:
             cursor.execute(query)
 
-        result = cursor.fetchall()  # Fetch all results before committing and closing
+        result = cursor.fetchall() if fetch else None
         connection.commit()
         connection.close()
         return result
     except Exception as e:
         logger.error(f"Error executing query: {query}. Params: {params}. Error: {e}")
         raise e
+
 
 # API route to handle KPI stats submission
 @app.route('/kpi_stats_submit', methods=['POST'])
@@ -97,6 +99,7 @@ def kpi_stats_submit():
                             existing_status = execute_query(status_query, status_params)
                             logger.debug(f"Existing status for KeyName {key['KeyName']}: {existing_status}")
 
+                            
                             # Insert or update values in service_status table
                             if not existing_status:
                                 # Check if KeyName is available in services_details table
@@ -116,7 +119,7 @@ def kpi_stats_submit():
                             else:
                                 update_status_query = "UPDATE service_status SET service_key_value = %s, service_key_desc = %s, last_updated_date = %s WHERE service_id = %s AND service_key_name = %s"
                                 update_status_params = (key["KeyValue"], key["KeyDesc"], datetime.now(), service_id, key["KeyName"])
-                                execute_query(update_status_query, update_status_params)
+                                execute_query(update_status_query, update_status_params, fetch=False)  # Set fetch=False for UPDATE queries
                                 logger.info(f"Updated status for KeyName {key['KeyName']}")
 
 
