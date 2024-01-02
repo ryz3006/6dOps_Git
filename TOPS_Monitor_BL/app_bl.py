@@ -223,7 +223,7 @@ def kpi_stats_submit():
         parallel_processing_steps(data, host_id, request_id, request_time)
 
         processing_time = time.time() - start_time
-        logger.info(f"Processing time for request- {request_id} : {processing_time} seconds")
+        logger.info(f"Processing time for request - {request_id} : {processing_time} seconds")
         return jsonify({"message": "KPI stats submitted successfully"}), 200
 
     except Exception as e:
