@@ -164,9 +164,9 @@ def process_services_and_keys(data, host_id, request_id, request_time):
             insert_alert_query = "INSERT INTO alert_history (RequestId, RequestDate, host_id, service_id, service_details_id, service_key_name, service_key_value, service_key_desc, updated_date, Month_Partition, Is_Status_Changed) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
             if existing_key:
-                insert_alert_params = (request_id, request_time, host_id, service_id, existing_key[0]["id"], key_name, key["KeyValue"], key["KeyDesc"], datetime.now(), request_time.strftime("%Y-%m"), 0)
+                insert_alert_params = (request_id, request_time, host_id, service_id, existing_key[0]["id"], key_name, key["KeyValue"], key["KeyDesc"], datetime.now(), request_time.strftime("%m"), 0)
             else:
-                insert_alert_params = (request_id, request_time, host_id, service_id, None, key_name, key["KeyValue"], key["KeyDesc"], datetime.now(), request_time.strftime("%Y-%m"), 0)
+                insert_alert_params = (request_id, request_time, host_id, service_id, None, key_name, key["KeyValue"], key["KeyDesc"], datetime.now(), request_time.strftime("%m"), 0)
 
             # Check if the service_key_value and last_service_key_value are different
             status_difference_query = "SELECT service_key_value, last_service_key_value FROM service_status WHERE host_id = %s AND service_id = %s AND service_details_id = %s AND service_key_name = %s ORDER BY last_updated_date DESC LIMIT 1"
