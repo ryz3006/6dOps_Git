@@ -17,6 +17,14 @@ db_config = {
     "password": "opsuser@6Dtech",
     "database": "OPS"
 }
+
+logger.info(f"Connecting to database with configuration: {db_config}")
+
+db = mysql.connector.connect(**db_config)
+
+logger.info("Database connection successful!")
+
+
 # Helper function to execute SQL queries
 def execute_query(query, params=None):
     try:
