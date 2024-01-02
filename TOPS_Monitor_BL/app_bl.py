@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Configure the logging module
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
+                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Database Configuration
