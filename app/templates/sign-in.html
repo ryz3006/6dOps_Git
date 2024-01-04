@@ -1,193 +1,282 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='media/Logo_A_Icon.png') }}">
-  <title>
-    6D - TOPS Monitor / Login
-  </title>
-  <!-- Fonts and icons -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
-  <!-- Custom Styles for the Alert Popup -->
-  <style>
-    .alert-popup {
-      position: fixed;
-      bottom: 25px;
-      right: 20px;
-      padding: 25px;
-      border-radius: 5px;
-      opacity: 0.9;
-      z-index: 1000;
-      /* Default background color (error) */
-      background-color: #fa3c02;
-      color: #fff;
-    }
-
-    .alert-popup.success {
-      /* Background color for success messages */
-      background-color: #28a745;
-    }
-
-    .close-btn {
-      cursor: pointer;
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      color: #fff;
-      font-weight: bold;
-      font-size: 16px;
-    }
-    .navbar-logo {
-    width: 150px; /* Adjust the width as needed */
-    height: 40px; /* Adjust the height as needed */
-    object-fit: contain; /* This property ensures the image retains its aspect ratio */
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Really Simple HTML Email Template</title>
+<style>
+/* ------------------------------------- 
+		GLOBAL 
+------------------------------------- */
+* { 
+	margin:0;
+	padding:0;
+	font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; 
+	font-size: 100%;
+	line-height: 1.6;
 }
-  </style>
+
+img { 
+	max-width: 100%; 
+}
+
+body {
+	-webkit-font-smoothing:antialiased; 
+	-webkit-text-size-adjust:none; 
+	width: 100%!important; 
+	height: 100%;
+}
+
+
+/* ------------------------------------- 
+		ELEMENTS 
+------------------------------------- */
+a { 
+	color: #348eda;
+}
+
+.btn-primary{
+	text-decoration:none;
+	color: #FFF;
+	background-color: #348eda;
+	border:solid #348eda;
+	border-width:10px 20px;
+	line-height:2;
+	font-weight:bold;
+	margin-right:10px;
+	text-align:center;
+	cursor:pointer;
+	display: inline-block;
+	border-radius: 25px;
+}
+
+.btn-secondary {
+	text-decoration:none;
+	color: #FFF;
+	background-color: #aaa;
+	border:solid #aaa;
+	border-width:10px 20px;
+	line-height:2;
+	font-weight:bold;
+	margin-right:10px;
+	text-align:center;
+	cursor:pointer;
+	display: inline-block;
+	border-radius: 25px;
+}
+
+.last { 
+	margin-bottom: 0;
+}
+
+.first{
+	margin-top: 0;
+}
+
+.padding{
+	padding:10px 0;
+}
+
+
+/* ------------------------------------- 
+		BODY 
+------------------------------------- */
+table.body-wrap { 
+	width: 100%;
+	padding: 20px;
+}
+
+table.body-wrap .container{
+	border: 1px solid #f0f0f0;
+}
+
+
+/* ------------------------------------- 
+		FOOTER 
+------------------------------------- */
+table.footer-wrap { 
+	width: 100%;	
+	clear:both!important;
+}
+
+.footer-wrap .container p {
+	font-size:12px;
+	color:#666;
+	
+}
+
+table.footer-wrap a{
+	color: #999;
+}
+
+
+/* ------------------------------------- 
+		TYPOGRAPHY 
+------------------------------------- */
+h1,h2,h3{
+	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; line-height: 1.1; margin-bottom:15px; color:#000;
+	margin: 40px 0 10px;
+	line-height: 1.2;
+	font-weight:200; 
+}
+
+h1 {
+	font-size: 36px;
+}
+h2 {
+	font-size: 28px;
+	text-align:center;
+}
+h3 {
+	font-size: 22px;
+}
+
+p, ul, ol { 
+	margin-bottom: 10px; 
+	font-weight: normal; 
+	font-size:15px;
+}
+
+ul li, ol li {
+	margin-left:5px;
+	list-style-position: inside;
+}
+
+strong{
+	font-size:18px;
+	font-weight:normal;
+}
+
+/* --------------------------------------------------- 
+		RESPONSIVENESS
+		Nuke it from orbit. It's the only way to be sure. 
+------------------------------------------------------ */
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+	display:block!important;
+	max-width:600px!important;
+	margin:0 auto!important; /* makes it centered */
+	clear:both!important;
+}
+
+/* Set the padding on the td rather than the div for Outlook compatibility */
+.body-wrap .container{
+	padding:20px;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+	max-width:600px;
+	margin:0 auto;
+	display:block; 
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table { 
+	width: 100%; 
+}
+
+.center{
+	text-align:center;
+}
+
+.logo{
+	display:inline-block;
+	width:399px;
+	height:85px;
+	max-width:90%;
+}
+
+.footnote{
+	font-size:14px;
+	color:#444;
+}
+
+@media all and (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx){
+	.logo{
+		background-image:url(chartblocks@2x.png);
+		background-size:100% auto;
+		background-repeat:no-repeat;
+	}
+	.logo img{
+		visibility:hidden;
+	}
+}
+
+</style>
 </head>
+ 
+<body bgcolor="#f6f6f6">
 
-<body class="">
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+<!-- body -->
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" bgcolor="#FFFFFF">
+			<div class="content">
+			<table>
+				<tr>
+					<td class="center">
+						<div class="logo">
+							<img src="chartblocks.png">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h2>Activate your account</h2>
+						<p>Hi Sam,
+						<p>Thanks for creating a ChartBlocks account. To use the email address test@test.com to log in to ChartBlocks please verify your email address by clicking the button below.</p>
+						<table>
+							<tr>
+								<td class="padding center">
+									<p><a href="https://github.com/leemunroe/html-email-template" class="btn-primary">Verify my email address</a></p>
+								</td>
+							</tr>
+						</table>
+						<p>Thanks,<br><strong>Sam</strong><br> ChartBlocks Support.</p>
+						<p><a href="http://twitter.com/chartblocks">Follow @chartblocks on Twitter</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="footnote">We hope you find ChartBlocks easy to use but if you have any problems drop an email to support@chartblocks.com and we'll get straight back to you.</p>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- /content -->
+									
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /body -->
 
-          <div class="container-fluid pe-0">
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
-              <img class="navbar-logo" src="{{ url_for('static', filename='media/Logo_A_Icon.png') }}" alt="6DLogo">
-          </a>
-              <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
-                  <img class="navbar-logo" src="{{ url_for('static', filename='media/tops-monitor-high-resolution-logo-transparent.png') }}" alt="Logo">
-              </a>
-          </div>
-      </nav>
-      
-      
-      
-      
-        <!-- End Navbar -->
-      </div>
-    </div>
-  </div>
-  <main class="main-content mt-0">
-    <section>
-      <div class="page-header min-vh-75">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-              <div class="card card-plain mt-8">
+<!-- footer -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+			
+			<!-- content -->
+			<div class="content">
+				<table>
+					<tr>
+						<td align="center">
+							<p>Don't like these annoying emails? <a href="#"><unsubscribe>Unsubscribe</unsubscribe></a>.
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div><!-- /content -->
+				
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /footer -->
 
-                <div class="card-header pb-0 text-left bg-transparent">
-                  <h3 class="font-weight-bolder text-info text-gradient">Login</h3>
-                </div>
-                <div class="card-body">
-                  {% with messages = get_flashed_messages(with_categories=true) %}
-                  {% for category, message in messages %}
-                      <div id="alert-popup" class="alert-popup {{ category }}">
-                          <span class="close-btn" onclick="closeAlert()">×</span>
-                          {{ message }}
-                      </div>
-                  {% endfor %}
-              {% endwith %}
-              
-              <script>
-                  function closeAlert() {
-                      // Delay the alert removal after 3 seconds
-                      setTimeout(function () {
-                          document.getElementById('alert-popup').style.display = 'none';
-                      }, 3000);
-                  }
-              
-                  // Close the alert when the page loads after 3 seconds
-                  document.addEventListener('DOMContentLoaded', function () {
-                      closeAlert();
-                  });
-              </script>
-              
-                  <form method="POST" action="{{ url_for('login_bp.login') }}">
-                    <div class="mb-3">
-                      <!-- Update the input names to match your Python code -->
-                      <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="username-addon" required>
-                    </div>
-                    <div class="mb-3">
-                      <!-- Update the input names to match your Python code -->
-                      <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon" required>
-                    </div>
-                    <!--<div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                      <label class="form-check-label" for="rememberMe">Remember me</label>
-                    </div>-->
-                    <div class="text-center">
-                      <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
-                    </div>
-                  </form>
-                </div>
-                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                  <p class="mb-4 text-sm mx-auto">
-                    Don't have an account?
-                    <a href="signup" class="text-info text-gradient font-weight-bold">Sign up</a>
-                  </p>
-                </div>
-
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
-  <footer class="footer py-5">
-    <div class="container">
-      
-      </div>
-      <div class="row">
-        <div class="col-8 mx-auto text-center mt-1">
-                    <div class="container-fluid pe-0 ml-auto">
-              <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" href="dashboard">
-                  <img class="navbar-logo" src="{{ url_for('static', filename='media/Logo_A.PNG') }}" alt="Logo" width="150" height="40">
-              </a>
-          </div>
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
-  <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-  </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
 </body>
-
 </html>

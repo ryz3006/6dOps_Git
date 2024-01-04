@@ -14,8 +14,9 @@ flask_port = int(config.get("flask_port", 5000))
 db_config = {
     "host": config.get("db_host", "127.0.0.1"),
     "user": config.get("db_user", ""),
+    "port": int(config.get("db_port", 3306)),
     "password": config.get("db_password", ""),
-    "database": config.get("db_database", "")
+    "database": config.get("db_database", "OPS")
 }
 
 # Set up logger for your script
