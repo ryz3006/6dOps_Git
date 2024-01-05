@@ -18,6 +18,7 @@ db_config = {
     "user": "opsuser",
     "password": "opsuser@6Dtech",
     "database": "OPS",
+    "port": 3307,
     "pool_size": 5  # Adjust the pool size based on your requirements
 }
 
@@ -185,6 +186,47 @@ def parallel_processing_steps(data, host_id, request_id, request_time):
     with ThreadPoolExecutor(max_workers=3) as executor:
         # Submit processing functions to the thread pool
         executor.submit(process_services_and_keys, data, host_id, request_id, request_time)
+
+# API route for heartbeat
+@app.route('/heartbeat', methods=['GET'])
+def heartbeat():
+    try:
+        hostname = request.args.get('hostname')
+        ip = request.args.get('ip')
+        request_timestamp = request.args.get('RequestTimeStamp')
+        logger.info(f"Heartbeat received for - {hostname} | IP : {ip}")
+
+        # Check if the hostname exists in the agent_heartbeat table
+        existing_entry = execute_query("SELECT * FROM agent_heartbeat WHERE hostname = %s", (hostname,))
+
+        if existing_entry:
+            # Update the last_heartbeat_datetime column
+            update_heartbeat_query = "UPDATE agent_heartbeat SET last_heartbeat_datetime = %s, ip = %s WHERE hostname = %s"
+            update_heartbeat_params = (datetime.now(), ip, hostname)
+            execute_query(update_heartbeat_query, update_heartbeat_params, fetch=False)
+            key_update_flag_result = execute_query("SELECT keyUpdate_flag FROM agent_heartbeat WHERE hostname = %s", (hostname,))
+
+            # Extract keyUpdate_flag value from the query result
+            key_update_flag = key_update_flag_result[0]["keyUpdate_flag"] if key_update_flag_result else 0
+        else:
+            # Insert a new entry in the agent_heartbeat table
+            insert_heartbeat_query = "INSERT INTO agent_heartbeat (hostname, ip, last_heartbeat_datetime, keyUpdate_flag) VALUES (%s, %s, %s, %s)"
+            insert_heartbeat_params = (hostname, ip, datetime.now(), 0)
+            execute_query(insert_heartbeat_query, insert_heartbeat_params, fetch=False)
+            key_update_flag = 0
+
+        response_data = {
+            "RequestTimeStamp": request_timestamp,
+            "hostname": hostname,
+            "keyUpdateFlag": key_update_flag
+        }
+        logger.info(f"Heartbeat Response sent with keyUpdateFlag : {key_update_flag}")
+
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        logger.error(f"Error in heartbeat endpoint: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 # API route to handle KPI stats submission
 @app.route('/kpi_stats_submit', methods=['POST'])
