@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Configure the logging module
 logging.basicConfig(format='%(asctime)s|%(name)s|%(levelname)s|%(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Database Configuration
@@ -104,13 +104,14 @@ def process_services_and_keys(data, host_id, request_id, request_time):
             key_name = key["KeyName"]
 
             # Check if the key exists in services_details table
-            existing_key = execute_query("SELECT * FROM services_details WHERE service_id = %s AND service_key_name = %s", (service_id, key_name))
+            existing_key = execute_query("SELECT * FROM services_details WHERE service_id = %s AND service_key_name = %s and host_id = %s", (service_id, key_name, host_id))
+            logger.info(f"Exixting Key - {existing_key}")
 
             if not existing_key:
                 # Insert into services_details if not present
                 threshold_value = 80.0 if service_sub_type == "P" else 0 if service_sub_type == "B" else 1000
-                insert_key_query = "INSERT INTO services_details (service_id, service_key_name, threshold_value, severity) VALUES (%s, %s, %s, %s)"
-                insert_key_params = (service_id, key_name, threshold_value, "s3")
+                insert_key_query = "INSERT INTO services_details (service_id, host_id, service_key_name, threshold_value, severity) VALUES (%s, %s, %s, %s, %s)"
+                insert_key_params = (service_id, host_id, key_name, threshold_value, "s3")
                 execute_query(insert_key_query, insert_key_params)
                 logger.debug(f"Inserted key for KeyName {key_name}")
 
@@ -227,6 +228,70 @@ def heartbeat():
     except Exception as e:
         logger.error(f"Error in heartbeat endpoint: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+# API route to get services for a given hostname
+@app.route('/getServices', methods=['GET'])
+def get_services():
+    try:
+        hostname = request.args.get('hostname')
+
+        # Check if the hostname exists in host_master table
+        host_id_result = execute_query("SELECT id FROM host_master WHERE hostname = %s", (hostname,))
+
+        if not host_id_result:
+            # If no host found, return fetchStatus F
+            response_data = {
+                "fetchStatus": "F",
+                "hostname": hostname,
+                "service_name": []
+            }
+            return jsonify(response_data), 200
+
+        host_id = host_id_result[0]["id"]
+
+        # Fetch services for the given host_id from service_master table
+        services_query = "SELECT service_name, serviceType FROM services_master WHERE serviceType NOT IN ('SYSTEM') AND id IN (SELECT DISTINCT service_id FROM services_details WHERE host_id = %s)"
+        services_params = (host_id,)
+        services_result = execute_query(services_query, services_params)
+
+        if not services_result:
+            # If no services found for the host, return fetchStatus F
+            response_data = {
+                "fetchStatus": "F",
+                "hostname": hostname,
+                "service_name": []
+            }
+            return jsonify(response_data), 200
+
+        # Fetch service details for each service from service_details table
+        service_data = []
+        for service in services_result:
+            service_name = service["service_name"]
+            serviceType = service["serviceType"]
+            service_details_query = "SELECT service_key_name, service_key_param FROM services_details WHERE service_id IN (SELECT id FROM services_master WHERE service_name = %s and host_id = %s)"
+            service_details_params = (service_name, host_id)
+            service_details_result = execute_query(service_details_query, service_details_params)
+
+            if not service_details_result:
+                # If no service details found, set param as NULL
+                service_details_list = [{"key": "default_key", "param": None}]
+            else:
+                service_details_list = [{"key": detail["service_key_name"], "param": detail["service_key_param"]} for detail in service_details_result]
+
+            service_data.append({"keyName": service_name, "serviceType": serviceType, "service_details": service_details_list})
+
+        # Prepare the response data
+        response_data = {
+            "fetchStatus": "S",
+            "hostname": hostname,
+            "service_name": service_data
+        }
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        logger.error(f"Error in getServices endpoint: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
 
 # API route to handle KPI stats submission
 @app.route('/kpi_stats_submit', methods=['POST'])
