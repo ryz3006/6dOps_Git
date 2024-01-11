@@ -79,5 +79,9 @@ def catch_all(path):
     # Redirect any unmatched URLs to the login screen
     return redirect(url_for('login_bp.login'))
 
+@app.route('/get_dashboard_data')
+def get_dashboard_data():
+    # Your code to fetch and return data
+
 if __name__ == '__main__':
     app.run(debug=True, host=flask_host, port=flask_port)

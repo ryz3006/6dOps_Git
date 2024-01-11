@@ -79,5 +79,6 @@ def catch_all(path):
     # Redirect any unmatched URLs to the login screen
     return redirect(url_for('login_bp.login'))
 
+
 if __name__ == '__main__':
     app.run(debug=True, host=flask_host, port=flask_port)

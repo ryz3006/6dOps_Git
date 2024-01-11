@@ -22,7 +22,7 @@ def login():
 
         if user and check_password_hash(user['password'], password):
             session['username'] = user['username']
-            return redirect(url_for('dashboard.dashboard'))
+            return redirect(url_for('dashboard_bp.dashboard'))
         else:
             flash('Invalid login credentials', 'error')
             logger.info(f"Login failed for : {username}")

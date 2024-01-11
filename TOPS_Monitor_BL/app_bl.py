@@ -19,7 +19,7 @@ db_config = {
     "password": "opsuser@6Dtech",
     "database": "OPS",
     "port": 3307,
-    "pool_size": 5  # Adjust the pool size based on your requirements
+    "pool_size": 5
 }
 
 logger.info(f"Connecting to database with configuration: {db_config}")
@@ -105,7 +105,6 @@ def process_services_and_keys(data, host_id, request_id, request_time):
 
             # Check if the key exists in services_details table
             existing_key = execute_query("SELECT * FROM services_details WHERE service_id = %s AND service_key_name = %s and host_id = %s", (service_id, key_name, host_id))
-            logger.info(f"Exixting Key - {existing_key}")
 
             if not existing_key:
                 # Insert into services_details if not present
@@ -113,7 +112,7 @@ def process_services_and_keys(data, host_id, request_id, request_time):
                 insert_key_query = "INSERT INTO services_details (service_id, host_id, service_key_name, threshold_value, severity) VALUES (%s, %s, %s, %s, %s)"
                 insert_key_params = (service_id, host_id, key_name, threshold_value, "s3")
                 execute_query(insert_key_query, insert_key_params)
-                logger.debug(f"Inserted key for KeyName {key_name}")
+                
 
             # Check if the service is available in service_status table
             status_query = "SELECT * FROM service_status WHERE service_id = %s AND service_key_name = %s"
