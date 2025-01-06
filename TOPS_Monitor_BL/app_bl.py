@@ -18,7 +18,7 @@ db_config = {
     "user": "opsuser",
     "password": "opsuser@6Dtech",
     "database": "OPS",
-    "port": 3307,
+    "port": 3306,
     "pool_size": 5
 }
 

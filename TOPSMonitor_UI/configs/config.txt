@@ -6,7 +6,7 @@ DB_HOST = 127.0.0.1
 DB_USER = opsuser
 DB_PASSWORD = opsuser@6Dtech
 DB_DATABASE = OPS
-DB_PORT = 3307
+DB_PORT = 3306
 
 [Session]
 SESSION_TYPE = filesystem

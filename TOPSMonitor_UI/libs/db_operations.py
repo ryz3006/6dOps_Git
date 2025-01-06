@@ -6,7 +6,7 @@ def create_db_connection():
     db_config = {
         "host": current_app.config.get("db_host", "127.0.0.1"),
         "user": current_app.config.get("db_user", "opsuser"),
-        "port": int(current_app.config.get("db_port", 3307)),
+        "port": int(current_app.config.get("db_port", 3306)),
         "password": current_app.config.get("db_password", "opsuser@6Dtech"),
         "database": current_app.config.get("db_database", "OPS")
     }
